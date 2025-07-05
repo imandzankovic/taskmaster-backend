@@ -2,27 +2,40 @@ package org.example.taskmasterbackend.service
 
 import org.example.taskmasterbackend.entity.Subtask
 import org.example.taskmasterbackend.repository.SubtaskRepository
+import org.example.taskmasterbackend.repository.TaskRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.Optional
 
 @Service
 public class SubtaskService @Autowired constructor(
-    private val subtaskRepository: SubtaskRepository
+    private val subtaskRepository: SubtaskRepository,
+    private val taskRepository: TaskRepository
 ) {
-    fun getAllTasks(): List<Subtask> {
+    fun getAllSubtasks(): List<Subtask> {
         return subtaskRepository.findAll()
     }
 
-    fun getTaskById(id: Long): Optional<Subtask> {
+    fun getSubtaskById(id: Long): Optional<Subtask> {
         return subtaskRepository.findById(id)
     }
 
-    fun saveTask(subtask: Subtask): Subtask {
+    fun saveSubtask(subtask: Subtask): Subtask {
+        require(subtask.task != null) { "Subtask must have a parent Task" }
         return subtaskRepository.save(subtask)
     }
 
-    fun deleteTaskById(id: Long) {
+    fun createSubtaskWithTask(subtask: Subtask, taskId: Long): Subtask {
+        val task = taskRepository.findById(taskId)
+            .orElseThrow { RuntimeException("Task not found with id $taskId") }
+        subtask.task = task
+        return subtaskRepository.save(subtask)
+    }
+    fun deleteSubtaskById(id: Long) {
         subtaskRepository.deleteById(id)
+    }
+
+    fun getSubtasksByTaskId(taskId: Long): List<Subtask> {
+        return subtaskRepository.findAllByTaskId(taskId)
     }
 }
