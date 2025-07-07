@@ -3,14 +3,7 @@ package org.example.taskmasterbackend.entity
 import jakarta.persistence.*
 
 @Entity
-class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
-
-    var name: String? = null
-    var description: String? = null
-    var completed: Boolean? = null
+class Task : BaseTask() {
 
     @OneToMany(mappedBy = "task", cascade = [CascadeType.ALL], orphanRemoval = true)
     var subtasks: MutableList<Subtask> = mutableListOf()
@@ -25,3 +18,4 @@ class Task {
         subtask.task = null
     }
 }
+

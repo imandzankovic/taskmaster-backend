@@ -5,15 +5,7 @@ import jakarta.persistence.*
 import java.time.LocalDate
 
 @Entity
-class Subtask {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
-
-    var name: String? = null
-    var description: String? = null
-    var completed: Boolean? = null
-    var dueDate: LocalDate? = null
+class Subtask : BaseTask() {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")

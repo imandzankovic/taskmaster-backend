@@ -21,7 +21,6 @@ public class SubtaskService @Autowired constructor(
     }
 
     fun saveSubtask(subtask: Subtask): Subtask {
-        require(subtask.task != null) { "Subtask must have a parent Task" }
         return subtaskRepository.save(subtask)
     }
 

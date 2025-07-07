@@ -29,11 +29,6 @@ class SubtaskController(
         return subtaskService.getSubtasksByTaskId(taskId)
     }
 
-    @PostMapping
-    fun createSubtask(@RequestBody subtask: Subtask): ResponseEntity<Subtask> {
-        return ResponseEntity.ok(subtaskService.saveSubtask(subtask))
-    }
-
     @PostMapping("/task/{taskId}")
     fun createSubtaskForTask(
         @PathVariable taskId: Long,
@@ -51,7 +46,6 @@ class SubtaskController(
             existing.name = subtask.name
             existing.description = subtask.description
             existing.completed = subtask.completed
-            existing.dueDate = subtask.dueDate
             existing.task = subtask.task
 
             ResponseEntity.ok(subtaskService.saveSubtask(existing))
